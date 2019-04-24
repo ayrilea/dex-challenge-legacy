@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/dex-challenge/static/css/main.584f321a.chunk.css",
+    "main.js": "/dex-challenge/static/js/main.87fb04e0.chunk.js",
+    "main.js.map": "/dex-challenge/static/js/main.87fb04e0.chunk.js.map",
+    "runtime~main.js": "/dex-challenge/static/js/runtime~main.9d0c4ade.js",
+    "runtime~main.js.map": "/dex-challenge/static/js/runtime~main.9d0c4ade.js.map",
+    "static/js/2.b41502e9.chunk.js": "/dex-challenge/static/js/2.b41502e9.chunk.js",
+    "static/js/2.b41502e9.chunk.js.map": "/dex-challenge/static/js/2.b41502e9.chunk.js.map",
+    "index.html": "/dex-challenge/index.html",
+    "precache-manifest.90e1738046be30eab1549f7396e97a79.js": "/dex-challenge/precache-manifest.90e1738046be30eab1549f7396e97a79.js",
+    "service-worker.js": "/dex-challenge/service-worker.js",
+    "static/css/main.584f321a.chunk.css.map": "/dex-challenge/static/css/main.584f321a.chunk.css.map",
+    "static/media/logo.svg": "/dex-challenge/static/media/logo.5d5d9eef.svg"
+  }
+}
