@@ -114,7 +114,7 @@ class DexChallenge extends PureComponent {
           {complete && <h3>Complete!</h3>}
           {!complete && (
             <form onSubmit={this.onSubmit}>
-              <InputGroup className={"mt-4"}>
+              <InputGroup>
                 <FormControl
                   aria-describedby="basic-addon2"
                   aria-label="Enter a Pokemon"
