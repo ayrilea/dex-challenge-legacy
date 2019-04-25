@@ -36,7 +36,7 @@ class DexChallenge extends PureComponent {
    * the input and sets the valid styling on the input field.
    */
   handleValidEntry = () => {
-    delete this.state.pokemon[this.state.input];
+    delete this.state.pokemon[this.state.input.toLowerCase()];
 
     this.setState(state => ({
       count: state.count + 1,
