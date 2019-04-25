@@ -105,7 +105,7 @@ class DexChallenge extends PureComponent {
       <div className="game-container p-3 text-center text-light">
         <h1>{this.state.count}</h1>
         <h4>Remaining: {this.state.total - this.state.count}</h4>
-        <div className="entered-container">
+        <div className="entered-container mt-4">
           {this.state.entered.map((item, index) => (
             <Image key={item.order} pokemon={item} />
           ))}
