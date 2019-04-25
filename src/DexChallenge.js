@@ -43,11 +43,14 @@ class DexChallenge extends PureComponent {
 
     this.setState(state => ({
       count: state.count + 1,
-      entered: [...state.entered, {
-        order: entry.order,
-        name: name, 
-        url: entry.url}]
-        .sort((a, b) => a.order - b.order),
+      entered: [
+        ...state.entered,
+        {
+          order: entry.order,
+          name: name,
+          url: entry.url
+        }
+      ].sort((a, b) => a.order - b.order),
       input: "",
       valid: true
     }));
@@ -150,9 +153,10 @@ class Image extends PureComponent {
   render() {
     return (
       <div className="image">
-        <img 
-          height="72px" 
-          src={require("./img/" + this.props.pokemon.url)} alt={this.props.pokemon.name}
+        <img
+          height="72px"
+          src={require("./img/" + this.props.pokemon.url)}
+          alt={this.props.pokemon.name}
           width="72px"
         />
       </div>
@@ -161,7 +165,7 @@ class Image extends PureComponent {
 }
 
 Image.propTypes = {
-  pokemon: PropTypes.object.isRequired,
-}
+  pokemon: PropTypes.object.isRequired
+};
 
 export default DexChallenge;
