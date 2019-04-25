@@ -11,8 +11,9 @@ class DexChallenge extends PureComponent {
 
     this.state = {
       count: 0,
+      entered: [],
       input: "",
-      pokemon: this.props.pokemon,
+      remaining: this.props.pokemon,
       valid: null,
       total: Object.keys(this.props.pokemon).length
     };
@@ -36,10 +37,17 @@ class DexChallenge extends PureComponent {
    * the input and sets the valid styling on the input field.
    */
   handleValidEntry = () => {
-    delete this.state.pokemon[this.state.input.toLowerCase()];
+    const name = this.state.input.toLowerCase();
+    const entry = this.state.remaining[name];
+    delete this.state.remaining[name];
 
     this.setState(state => ({
       count: state.count + 1,
+      entered: [...state.entered, {
+        order: entry.order,
+        name: name, 
+        url: entry.url}]
+        .sort((a, b) => a.order - b.order),
       input: "",
       valid: true
     }));
@@ -62,7 +70,7 @@ class DexChallenge extends PureComponent {
    * @return true if the current input is valid, otherwise false
    */
   isInputValid = () => {
-    return this.state.pokemon.hasOwnProperty(this.state.input.toLowerCase());
+    return this.state.remaining.hasOwnProperty(this.state.input.toLowerCase());
   };
 
   /**
@@ -87,6 +95,7 @@ class DexChallenge extends PureComponent {
     } else {
       this.handleInvalidEntry();
     }
+    console.log(this.state.entered);
   };
 
   render() {
@@ -96,6 +105,11 @@ class DexChallenge extends PureComponent {
       <div className="game-container p-3 text-center text-light">
         <h1>{this.state.count}</h1>
         <h4>Remaining: {this.state.total - this.state.count}</h4>
+        <div className="entered-container">
+          {this.state.entered.map((item, index) => (
+            <Image key={item.order} pokemon={item} />
+          ))}
+        </div>
         <div className="mt-4">
           {complete && <h3>Complete!</h3>}
           {!complete && (
@@ -131,5 +145,23 @@ class DexChallenge extends PureComponent {
 DexChallenge.propTypes = {
   pokemon: PropTypes.object.isRequired
 };
+
+class Image extends PureComponent {
+  render() {
+    return (
+      <div className="image">
+        <img 
+          height="72px" 
+          src={require("./img/" + this.props.pokemon.url)} alt={this.props.pokemon.name}
+          width="72px"
+        />
+      </div>
+    );
+  }
+}
+
+Image.propTypes = {
+  pokemon: PropTypes.object.isRequired,
+}
 
 export default DexChallenge;

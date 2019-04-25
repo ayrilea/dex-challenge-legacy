@@ -1,4 +1,15 @@
-.game-container {
+.entered-container {
+  margin: 0 auto;
   max-width: 330px;
+  text-align: center;
+}
+
+.game-container {
+  margin: 0 auto;
+  max-width: 330px;
+}
+
+.image {
+  display: inline-block;
   margin: 0 auto;
 }

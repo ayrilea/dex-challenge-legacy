@@ -10,6 +10,7 @@
 *.js            text
 *.json          text
 *.jsx           text
+*.scss          text
 
 # Documentation
 *.md            text
@@ -19,3 +20,4 @@
 
 # Graphics
 *.ico           binary
+*.png           binary
