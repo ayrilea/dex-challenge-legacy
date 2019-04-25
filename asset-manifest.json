@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/dex-challenge/static/css/main.3c53e91d.chunk.css",
-    "main.js": "/dex-challenge/static/js/main.33568585.chunk.js",
-    "main.js.map": "/dex-challenge/static/js/main.33568585.chunk.js.map",
+    "main.js": "/dex-challenge/static/js/main.958d6233.chunk.js",
+    "main.js.map": "/dex-challenge/static/js/main.958d6233.chunk.js.map",
     "runtime~main.js": "/dex-challenge/static/js/runtime~main.9d0c4ade.js",
     "runtime~main.js.map": "/dex-challenge/static/js/runtime~main.9d0c4ade.js.map",
     "static/css/2.22a7d4ef.chunk.css": "/dex-challenge/static/css/2.22a7d4ef.chunk.css",
     "static/js/2.69c2b3d8.chunk.js": "/dex-challenge/static/js/2.69c2b3d8.chunk.js",
     "static/js/2.69c2b3d8.chunk.js.map": "/dex-challenge/static/js/2.69c2b3d8.chunk.js.map",
     "index.html": "/dex-challenge/index.html",
-    "precache-manifest.6729031c2ba08d35e71986ea45854344.js": "/dex-challenge/precache-manifest.6729031c2ba08d35e71986ea45854344.js",
+    "precache-manifest.b5b6b77511ebc33b14ba0787108ec96e.js": "/dex-challenge/precache-manifest.b5b6b77511ebc33b14ba0787108ec96e.js",
     "service-worker.js": "/dex-challenge/service-worker.js",
     "static/css/2.22a7d4ef.chunk.css.map": "/dex-challenge/static/css/2.22a7d4ef.chunk.css.map",
     "static/css/main.3c53e91d.chunk.css.map": "/dex-challenge/static/css/main.3c53e91d.chunk.css.map"
