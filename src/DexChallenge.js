@@ -15,9 +15,22 @@ class DexChallenge extends PureComponent {
       input: "",
       remaining: this.props.pokemon,
       valid: null,
-      total: Object.keys(this.props.pokemon).length
+      total: Object.keys(this.props.pokemon).length,
     };
   }
+
+  /**
+   * Parse inputted name into the format expected by props.pokemon.
+   *
+   * @return the inputted name, trimmed (leading/trialing spaces removed), all lower case,
+   *         and with spaces replaced by hyphens
+   */
+  static parseName = (name) => {
+    return name
+      .trim()
+      .toLowerCase()
+      .replace(" ", "-");
+  };
 
   /**
    * Handle when entry is submitted and it is invalid.
@@ -25,8 +38,8 @@ class DexChallenge extends PureComponent {
    * This method sets the invalid styling on the input field.
    */
   handleInvalidEntry = () => {
-    this.setState(state => ({
-      valid: false
+    this.setState((state) => ({
+      valid: false,
     }));
   };
 
@@ -36,23 +49,22 @@ class DexChallenge extends PureComponent {
    * This method removes the entry from the remaining list, updates the counter, clears
    * the input and sets the valid styling on the input field.
    */
-  handleValidEntry = () => {
-    const name = this.state.input.toLowerCase();
+  handleValidEntry = (name) => {
     const entry = this.state.remaining[name];
     delete this.state.remaining[name];
 
-    this.setState(state => ({
+    this.setState((state) => ({
       count: state.count + 1,
       entered: [
         ...state.entered,
         {
           order: entry.order,
           name: name,
-          url: entry.url
-        }
+          url: entry.url,
+        },
       ].sort((a, b) => a.order - b.order),
       input: "",
-      valid: true
+      valid: true,
     }));
   };
 
@@ -64,25 +76,24 @@ class DexChallenge extends PureComponent {
   };
 
   /**
-   * Returns whether or not the current input is valid.
+   * Returns whether or not the current input is a valid entry.
    *
    * The current input is what is entered in the input field when submit is invoked.
-   * Valid input is when the input matches one of the items in the remaining list,
-   * case insensitive.
+   * Valid input is when the input matches one of the items in the remaining list.
    *
    * @return true if the current input is valid, otherwise false
    */
-  isInputValid = () => {
-    return this.state.remaining.hasOwnProperty(this.state.input.toLowerCase());
+  isValidEntry = (name) => {
+    return this.state.remaining.hasOwnProperty(name);
   };
 
   /**
    * When input changes, updates input state and clears valid styling.
    */
   onChange = ({ target }) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       input: target.value,
-      valid: null
+      valid: null,
     }));
   };
 
@@ -90,15 +101,17 @@ class DexChallenge extends PureComponent {
    * When input is submit, refocuses input and applies handling depending on whether or
    * not input is valid.
    */
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
     this.inputNode.focus();
-    if (this.isInputValid()) {
-      this.handleValidEntry();
+
+    const name = DexChallenge.parseName(this.state.input);
+
+    if (this.isValidEntry(name)) {
+      this.handleValidEntry(name);
     } else {
       this.handleInvalidEntry();
     }
-    console.log(this.state.entered);
   };
 
   render() {
@@ -127,7 +140,7 @@ class DexChallenge extends PureComponent {
                   isValid={this.state.valid}
                   onChange={this.onChange}
                   placeholder="Enter a Pokemon"
-                  ref={ref => (this.inputNode = ref)}
+                  ref={(ref) => (this.inputNode = ref)}
                   spellCheck={false}
                   value={this.state.input}
                 />
@@ -146,7 +159,7 @@ class DexChallenge extends PureComponent {
 }
 
 DexChallenge.propTypes = {
-  pokemon: PropTypes.object.isRequired
+  pokemon: PropTypes.object.isRequired,
 };
 
 class Image extends PureComponent {
@@ -165,7 +178,7 @@ class Image extends PureComponent {
 }
 
 Image.propTypes = {
-  pokemon: PropTypes.object.isRequired
+  pokemon: PropTypes.object.isRequired,
 };
 
 export default DexChallenge;
