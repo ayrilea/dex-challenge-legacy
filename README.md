@@ -1,6 +1,6 @@
 # Pokemon DexChallenge
 
-DexChallenge is a Pokemon challenge game where you have to enter all of the Pokemon from the PokeDex (currently just the Kanto PokeDex). It tracks your progress by showing you the Pokemon you have entered (and how many) and also showing you how many remain.
+DexChallenge is a Pokemon challenge game where you selection a generation (or multiple generations) and have to enter all of the Pokemon from the PokeDex. It tracks your progress by showing you the Pokemon you have entered (and how many) and also showing you how many remain.
 
 ## Available Scripts
 

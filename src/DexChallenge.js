@@ -121,6 +121,7 @@ class DexChallenge extends PureComponent {
       <div className="game-container p-3 text-center text-light">
         <h1>{this.state.count}</h1>
         <h4>Remaining: {this.state.total - this.state.count}</h4>
+        Generation {this.props.generations}
         <div className="entered-container mt-4">
           {this.state.entered.map((item, index) => (
             <Image key={item.order} pokemon={item} />
@@ -159,6 +160,7 @@ class DexChallenge extends PureComponent {
 }
 
 DexChallenge.propTypes = {
+  generations: PropTypes.string.isRequired,
   pokemon: PropTypes.object.isRequired,
 };
 

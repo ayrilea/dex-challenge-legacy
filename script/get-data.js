@@ -1,44 +1,84 @@
 const fs = require("fs");
 const rp = require("request-promise");
 
-let count = 0;
-
-//TODO only downloads 150 at a time (random order), probably rate limited and/or node struggling
-const downloadSprite = (url) => {
-  rp(url)
-    .then(body => {
-      console.log("Requesting sprite for " + body.name + ".");
-      rp(body.sprites.front_default).pipe(fs.createWriteStream("src/img/" + body.name + ".png"));
-      console.log("Downloaded sprite for " + body.name + ".");
-      count = count + 1;
-      console.log("count: " +  count);
-    });
-}
+/**
+ * Command line arguments.
+ *
+ * -f : force (always download sprites, even if they already exist)
+ * -s : download Pokemon sprites (in addition to generating data JSON)
+ * -v : verbose (extra logging)
+ */
+const force = process.argv.indexOf("-f") > -1;
+const sprite = process.argv.indexOf("-s") > -1;
+const verbose = process.argv.indexOf("-v") > -1;
 
 /**
- * Format the data downloaded from PokeAPI into the name format needed by DexChallenge,
- * and optionally downloads sprites if '-s' flag is set.
+ * 0-indexed array of Pokemon per generation.
  *
- * [{ "name":"bulbasaur", "url": "..." }, { ... }] -> { "bulbasaur": {}, ... }
- *
- * @param {Object} data The data to format, as an array of objects with name and url keys.
- * @return The formatted data, as an object where each key is a name (and the value an empty object).
+ * e.g. to get the number of Pokemon in generation 2: pokemonInGeneration[2-1];
  */
-const processData = data => {
-  console.log("Processing data..");
+const pokemonInGeneration = [151, 251, 386, 493, 649, 721, 807];
+
+const convertToMap = (data) => {
+  console.log("Converting Pokemon array into Dex-Challenge format map.");
   return data.reduce((result, item) => {
-    if (process.argv.indexOf('-s') > -1) {
-      downloadSprite(item.url);
+    const name = item.species.name;
+    if (verbose) {
+      console.log("Processing " + name + ".");
+    }
+    if (sprite) {
+      downloadSprite(name, item.sprites.front_default);
     }
 
-    const urlParts = item.url.split("/");
-    result[item.name] = { 
-      order: urlParts[urlParts.length - 2], //URLs ends in /{order}/, so the second last part is the order
-      url: item.name + ".png"
+    result[name] = {
+      generation: generationOf(item.id),
+      order: item.id,
+      url: name + ".png",
     };
     return result;
   }, {});
 };
+
+const downloadSprite = (name, url) => {
+  const path = "src/img/" + name + ".png";
+  if (force || !fs.existsSync(path)) {
+    console.log("Requesting sprite for " + name + ".");
+    rp(url).pipe(fs.createWriteStream("src/img/" + name + ".png"));
+    console.log("Downloaded sprite for " + name + ".");
+  } else if (verbose) {
+    console.log(
+      "Skipping downloding sprite for " +
+        name +
+        " since it is already downloaded."
+    );
+  }
+};
+
+const generationOf = (number) => {
+  for (const generation of pokemonInGeneration) {
+    if (number <= generation) {
+      return pokemonInGeneration.indexOf(generation) + 1;
+    }
+  }
+};
+
+const requestPokemon = (name) => {
+  return () => {
+    if (verbose) {
+      console.log("Requesting data for " + name + ".");
+    }
+    return P.getPokemonByName(name);
+  };
+};
+
+const serial = (funcs) =>
+  funcs.reduce(
+    (promise, func) =>
+      promise.then((result) =>
+        func().then(Array.prototype.concat.bind(result))
+      ),
+    Promise.resolve([])
+  );
 
 const writeFile = (location, data) => {
   console.log("Writing data file..");
@@ -52,12 +92,21 @@ const writeFile = (location, data) => {
   });
 };
 
-console.log("Requesting data..");
+const Pokedex = require("pokedex-promise-v2");
 const options = {
-  uri: "https://pokeapi.co/api/v2/pokemon?limit=151",
-  json: "true"
-}
-rp(options)
-  .then(body => {
-    writeFile("src/data.json", processData(body.results));
-  });
+  cacheLimit: 1, //Prevent script from living longer than needed due to keeping cache alive
+  timeout: 1000 * 60 * 5, //Extra long timeout to accountt for rate limiting
+};
+const P = new Pokedex(options);
+
+const interval = {
+  limit: pokemonInGeneration[pokemonInGeneration.length - 1] - 1, //promise API returns one extra
+  offset: 0,
+};
+console.log("Requesting data..");
+P.getPokemonsList(interval)
+  .then((json) => json.results.map((pokemon) => pokemon.name))
+  .then((names) => names.map((name) => requestPokemon(name)))
+  .then((requests) => serial(requests))
+  .then((pokemonArray) => convertToMap(pokemonArray))
+  .then((pokemonMap) => writeFile("src/data/pokemon.json", pokemonMap));
