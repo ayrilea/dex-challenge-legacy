@@ -10,10 +10,11 @@ class DexChallenge extends PureComponent {
     super(props);
 
     this.state = {
-      count: 0,
-      entered: [],
+      count: JSON.parse(sessionStorage.getItem("count")) || 0,
+      entered: JSON.parse(sessionStorage.getItem("entered")) || [],
       input: "",
-      remaining: this.props.pokemon,
+      remaining:
+        JSON.parse(sessionStorage.getItem("remaining")) || this.props.pokemon,
       valid: null,
       total: Object.keys(this.props.pokemon).length,
     };
@@ -50,22 +51,33 @@ class DexChallenge extends PureComponent {
    * the input and sets the valid styling on the input field.
    */
   handleValidEntry = (name) => {
-    const entry = this.state.remaining[name];
-    delete this.state.remaining[name];
+    this.setState((state) => {
+      const entry = state.remaining[name];
+      const remaining = state.remaining;
+      delete remaining[name];
 
-    this.setState((state) => ({
-      count: state.count + 1,
-      entered: [
+      const count = state.count + 1;
+      const entered = [
         ...state.entered,
         {
           order: entry.order,
           name: name,
           url: entry.url,
         },
-      ].sort((a, b) => a.order - b.order),
-      input: "",
-      valid: true,
-    }));
+      ].sort((a, b) => a.order - b.order);
+
+      sessionStorage.setItem("count", JSON.stringify(count));
+      sessionStorage.setItem("entered", JSON.stringify(entered));
+      sessionStorage.setItem("remaining", JSON.stringify(remaining));
+
+      return {
+        count: count,
+        entered: entered,
+        input: "",
+        remaining: remaining,
+        valid: true,
+      };
+    });
   };
 
   /**
@@ -114,6 +126,14 @@ class DexChallenge extends PureComponent {
     }
   };
 
+  reset = () => {
+    sessionStorage.removeItem("count");
+    sessionStorage.removeItem("entered");
+    sessionStorage.removeItem("remaining");
+
+    this.props.reset();
+  };
+
   render() {
     const complete = this.isComplete();
 
@@ -121,7 +141,7 @@ class DexChallenge extends PureComponent {
       <div className="game-container text-center text-light">
         <div className="game-header p-3">
           <div className="game-count">
-            <Button onClick={this.props.reset} variant="outline-light">
+            <Button onClick={this.reset} variant="outline-light">
               Reset
             </Button>
             <h1>{this.state.count}</h1>
