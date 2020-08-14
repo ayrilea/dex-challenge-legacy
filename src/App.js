@@ -14,12 +14,6 @@ class App extends PureComponent {
     };
   }
 
-  backToMenu = () => {
-    this.setState({
-      inGame: false,
-    });
-  };
-
   parseGenerations = () => {
     const generations = this.state.generations;
     const numberOfGenerations = generations.length;
@@ -35,6 +29,13 @@ class App extends PureComponent {
     );
   };
 
+  reset = () => {
+    this.setState({
+      generations: [],
+      inGame: false,
+    });
+  };
+
   startGame = (generations) => {
     this.setState({
       generations: generations,
@@ -45,13 +46,13 @@ class App extends PureComponent {
   render() {
     return this.state.inGame ? (
       <DexChallenge
-        backToMenu={this.backToMenu}
         generations={this.parseGenerations()}
         pokemon={Object.fromEntries(
           Object.entries(Pokemon).filter(([name, data]) =>
             this.state.generations.includes(String(data.generation))
           )
         )}
+        reset={this.reset}
       />
     ) : (
       <Menu startGame={this.startGame} />

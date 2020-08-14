@@ -20,6 +20,23 @@
   margin: 0 auto;
 }
 
+.game-header {
+  .game-count {
+    button {
+      position: absolute;
+      left: 4px;
+      /* vertically center the icon */
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    position: relative;
+  }
+
+  width: 100%;
+  max-width: 720px;
+}
+
 .image {
   display: inline-block;
   margin: 0 auto;

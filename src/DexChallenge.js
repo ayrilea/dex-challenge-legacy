@@ -119,8 +119,13 @@ class DexChallenge extends PureComponent {
 
     return (
       <div className="game-container text-center text-light">
-        <div className="p-3">
-          <h1>{this.state.count}</h1>
+        <div className="game-header p-3">
+          <div className="game-count">
+            <Button onClick={this.props.reset} variant="outline-light">
+              Reset
+            </Button>
+            <h1>{this.state.count}</h1>
+          </div>
           <h4>Remaining: {this.state.total - this.state.count}</h4>
           Generation {this.props.generations}
         </div>
@@ -164,6 +169,7 @@ class DexChallenge extends PureComponent {
 DexChallenge.propTypes = {
   generations: PropTypes.string.isRequired,
   pokemon: PropTypes.object.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 class Image extends PureComponent {
