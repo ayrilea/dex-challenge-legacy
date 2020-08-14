@@ -60,6 +60,7 @@ class DexChallenge extends PureComponent {
       const entered = [
         ...state.entered,
         {
+          displayName: entry.displayName,
           order: entry.order,
           name: name,
           url: entry.url,
@@ -155,7 +156,7 @@ class DexChallenge extends PureComponent {
               <Image pokemon={item} />
               <span className="pokemon-number">#{item.order}</span>
               <br />
-              <span className="pokemon-name">{item.name}</span>
+              <span className="pokemon-name">{item.displayName}</span>
             </div>
           ))}
         </div>

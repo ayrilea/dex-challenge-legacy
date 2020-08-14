@@ -1,4 +1,5 @@
 const fs = require("fs");
+const Pokedex = require("pokedex-promise-v2");
 const rp = require("request-promise");
 
 /**
@@ -12,26 +13,17 @@ const force = process.argv.indexOf("-f") > -1;
 const sprite = process.argv.indexOf("-s") > -1;
 const verbose = process.argv.indexOf("-v") > -1;
 
-/**
- * 0-indexed array of Pokemon per generation.
- *
- * e.g. to get the number of Pokemon in generation 2: pokemonInGeneration[2-1];
- */
-const pokemonInGeneration = [151, 251, 386, 493, 649, 721, 807];
-
 const convertToMap = (data) => {
   console.log("Converting Pokemon array into Dex-Challenge format map.");
   return data.reduce((result, item) => {
-    const name = item.species.name;
+    const name = item.name;
     if (verbose) {
       console.log("Processing " + name + ".");
     }
-    if (sprite) {
-      downloadSprite(name, item.sprites.front_default);
-    }
 
     result[name] = {
-      generation: generationOf(item.id),
+      displayName: englishNameFrom(item.names),
+      generation: generationFrom(item.generation),
       order: item.id,
       url: name + ".png",
     };
@@ -54,20 +46,55 @@ const downloadSprite = (name, url) => {
   }
 };
 
-const generationOf = (number) => {
-  for (const generation of pokemonInGeneration) {
-    if (number <= generation) {
-      return pokemonInGeneration.indexOf(generation) + 1;
-    }
+const downloadSprites = (data) => {
+  data.forEach((item) => {
+    downloadSprite(item.species.name, item.sprites.front_default);
+  });
+};
+
+const englishNameFrom = (names) => {
+  return names
+    .filter((name) => name.language.name === "en")
+    .map((name) => name.name)
+    .join();
+};
+
+const generationFrom = (generation) => {
+  switch (generation.name) {
+    case "generation-i":
+      return 1;
+    case "generation-ii":
+      return 2;
+    case "generation-iii":
+      return 3;
+    case "generation-iv":
+      return 4;
+    case "generation-v":
+      return 5;
+    case "generation-vi":
+      return 6;
+    case "generation-vii":
+      return 7;
+    default:
+      console.error("invalid generation " + generation);
   }
 };
 
 const requestPokemon = (name) => {
   return () => {
     if (verbose) {
-      console.log("Requesting data for " + name + ".");
+      console.log("Requesting Pokemon data for " + name + ".");
     }
     return P.getPokemonByName(name);
+  };
+};
+
+const requestPokemonSpecies = (name) => {
+  return () => {
+    if (verbose) {
+      console.log("Requesting species data for " + name + ".");
+    }
+    return P.getPokemonSpeciesByName(name);
   };
 };
 
@@ -92,21 +119,30 @@ const writeFile = (location, data) => {
   });
 };
 
-const Pokedex = require("pokedex-promise-v2");
 const options = {
   cacheLimit: 1, //Prevent script from living longer than needed due to keeping cache alive
   timeout: 1000 * 60 * 5, //Extra long timeout to accountt for rate limiting
 };
 const P = new Pokedex(options);
 
-const interval = {
-  limit: pokemonInGeneration[pokemonInGeneration.length - 1] - 1, //promise API returns one extra
-  offset: 0,
-};
 console.log("Requesting data..");
-P.getPokemonsList(interval)
+P.getPokemonSpeciesList()
   .then((json) => json.results.map((pokemon) => pokemon.name))
-  .then((names) => names.map((name) => requestPokemon(name)))
+  .then((names) => names.map((name) => requestPokemonSpecies(name)))
   .then((requests) => serial(requests))
   .then((pokemonArray) => convertToMap(pokemonArray))
   .then((pokemonMap) => writeFile("src/data/pokemon.json", pokemonMap));
+
+if (sprite) {
+  console.log("Downloading sprites..");
+  const numberOfPokemon = 807;
+  const interval = {
+    limit: numberOfPokemon - 1, //Promise API returns one extra
+    offset: 0,
+  };
+  P.getPokemonsList(interval)
+    .then((json) => json.results.map((pokemon) => pokemon.name))
+    .then((names) => names.map((name) => requestPokemon(name)))
+    .then((requests) => serial(requests))
+    .then((pokemonArray) => downloadSprites(pokemonArray));
+}
