@@ -1,15 +1,30 @@
 .entered-container {
-  margin: 0 auto;
-  max-width: 330px;
+  overflow-y: auto;
+  max-width: 720px;
   text-align: center;
 }
 
+.entered-container::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
+
 .game-container {
+  align-items: center;
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  height: 100%;
   margin: 0 auto;
-  max-width: 330px;
 }
 
 .image {
   display: inline-block;
   margin: 0 auto;
+}
+
+.input-container {
+  max-width: 400px;
+  width: 100%;
 }

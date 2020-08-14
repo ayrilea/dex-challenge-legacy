@@ -118,16 +118,18 @@ class DexChallenge extends PureComponent {
     const complete = this.isComplete();
 
     return (
-      <div className="game-container p-3 text-center text-light">
-        <h1>{this.state.count}</h1>
-        <h4>Remaining: {this.state.total - this.state.count}</h4>
-        Generation {this.props.generations}
-        <div className="entered-container mt-4">
+      <div className="game-container text-center text-light">
+        <div className="p-3">
+          <h1>{this.state.count}</h1>
+          <h4>Remaining: {this.state.total - this.state.count}</h4>
+          Generation {this.props.generations}
+        </div>
+        <div className="entered-container p-1">
           {this.state.entered.map((item, index) => (
             <Image key={item.order} pokemon={item} />
           ))}
         </div>
-        <div className="mt-4">
+        <div className="input-container p-3">
           {complete && <h3>Complete!</h3>}
           {!complete && (
             <form onSubmit={this.onSubmit}>

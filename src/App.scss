@@ -2,6 +2,16 @@
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
 
+html {
+  height: 100%;
+}
+
 body {
   background-color: theme-color("dark");
+  display: flex;
+  height: 100%;
+}
+
+#root {
+  width: 100%;
 }
