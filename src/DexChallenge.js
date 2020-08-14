@@ -151,7 +151,12 @@ class DexChallenge extends PureComponent {
         </div>
         <div className="entered-container p-1">
           {this.state.entered.map((item, index) => (
-            <Image key={item.order} pokemon={item} />
+            <div className="pokemon" key={item.order}>
+              <Image pokemon={item} />
+              <span className="pokemon-number">#{item.order}</span>
+              <br />
+              <span className="pokemon-name">{item.name}</span>
+            </div>
           ))}
         </div>
         <div className="input-container p-3">

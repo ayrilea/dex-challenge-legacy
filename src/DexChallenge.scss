@@ -37,9 +37,15 @@
   max-width: 720px;
 }
 
-.image {
+.pokemon {
   display: inline-block;
+  height: 140px; //img height + room for number and name
+  width: 72px; //img width
   margin: 0 auto;
+
+  .pokemon-name {
+    font-size: small;
+  }
 }
 
 .input-container {
