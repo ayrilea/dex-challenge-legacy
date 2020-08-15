@@ -39,7 +39,7 @@ class DexChallenge extends PureComponent {
     const lastValidId = this.state.lastValidId;
     if (lastValidId && prevState.lastValidId !== lastValidId) {
       this.refsArray[this.state.lastValidId].scrollIntoView({
-        behavior: "smooth",
+        behavior: "auto",
         block: "center",
       });
     }
@@ -129,7 +129,7 @@ class DexChallenge extends PureComponent {
    */
   onSubmit = (e) => {
     e.preventDefault();
-    this.inputNode.focus();
+    this.inputNode.focus({ preventScroll: true });
 
     const name = DexChallenge.parseName(this.state.input);
 
