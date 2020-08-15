@@ -52,7 +52,7 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 2"
                 checked={this.state.generations.includes("2")}
-                id="generation-1-checkbox"
+                id="generation-2-checkbox"
                 inline
                 label="2"
                 onChange={(e) => this.onChange(e.target.checked, "2")}
@@ -62,7 +62,7 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 3"
                 checked={this.state.generations.includes("3")}
-                id="generation-1-checkbox"
+                id="generation-3-checkbox"
                 inline
                 label="3"
                 onChange={(e) => this.onChange(e.target.checked, "3")}
@@ -72,7 +72,7 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 4"
                 checked={this.state.generations.includes("4")}
-                id="generation-1-checkbox"
+                id="generation-4-checkbox"
                 inline
                 label="4"
                 onChange={(e) => this.onChange(e.target.checked, "4")}
@@ -84,7 +84,7 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 5"
                 checked={this.state.generations.includes("5")}
-                id="generation-1-checkbox"
+                id="generation-5-checkbox"
                 inline
                 label="5"
                 onChange={(e) => this.onChange(e.target.checked, "5")}
@@ -94,7 +94,7 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 6"
                 checked={this.state.generations.includes("6")}
-                id="generation-1-checkbox"
+                id="generation-6-checkbox"
                 inline
                 label="6"
                 onChange={(e) => this.onChange(e.target.checked, "6")}
@@ -104,7 +104,7 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 7"
                 checked={this.state.generations.includes("7")}
-                id="generation-1-checkbox"
+                id="generation-7-checkbox"
                 inline
                 label="7"
                 onChange={(e) => this.onChange(e.target.checked, "7")}
@@ -115,7 +115,7 @@ class Menu extends PureComponent {
                 aria-label="Generation 8"
                 checked={this.state.generations.includes("8")}
                 disabled
-                id="generation-1-checkbox"
+                id="generation-8-checkbox"
                 inline
                 label="8"
                 onChange={(e) => this.onChange(e.target.checked, "8")}
