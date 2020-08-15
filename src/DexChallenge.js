@@ -9,6 +9,8 @@ class DexChallenge extends PureComponent {
   constructor(props) {
     super(props);
 
+    this.refsArray = [];
+
     this.state = {
       count: JSON.parse(sessionStorage.getItem("count")) || 0,
       entered: JSON.parse(sessionStorage.getItem("entered")) || [],
@@ -32,6 +34,16 @@ class DexChallenge extends PureComponent {
       .toLowerCase()
       .replace(" ", "-");
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    const lastValidId = this.state.lastValidId;
+    if (lastValidId && prevState.lastValidId !== lastValidId) {
+      this.refsArray[this.state.lastValidId].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }
 
   /**
    * Handle when entry is submitted and it is invalid.
@@ -74,6 +86,7 @@ class DexChallenge extends PureComponent {
       return {
         count: count,
         entered: entered,
+        lastValidId: entry.order,
         input: "",
         remaining: remaining,
         valid: true,
@@ -151,8 +164,14 @@ class DexChallenge extends PureComponent {
           Generation {this.props.generations}
         </div>
         <div className="entered-container p-1">
-          {this.state.entered.map((item, index) => (
-            <div className="pokemon" key={item.order}>
+          {this.state.entered.map((item, i) => (
+            <div
+              className="pokemon"
+              key={i}
+              ref={(ref) => {
+                this.refsArray[item.order] = ref;
+              }}
+            >
               <Image pokemon={item} />
               <span className="pokemon-number">#{item.order}</span>
               <br />
