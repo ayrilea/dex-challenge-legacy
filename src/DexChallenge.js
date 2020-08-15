@@ -166,7 +166,10 @@ class DexChallenge extends PureComponent {
         <div className="entered-container p-1">
           {this.state.entered.map((item, i) => (
             <div
-              className="pokemon"
+              className={
+                "pokemon" +
+                (item.order === this.state.lastValidId ? " last-valid" : "")
+              }
               key={i}
               ref={(ref) => {
                 this.refsArray[item.order] = ref;
