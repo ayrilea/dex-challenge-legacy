@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7db92acd093caf821fe43f3425f230f9",
+    "revision": "75024505b83635c9d6ba7fda3ef3825c",
     "url": "/dex-challenge/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dex-challenge/static/css/2.7fb3ad5b.chunk.css"
   },
   {
-    "revision": "b90cea884ed9c71af3f5",
+    "revision": "702e1815f13b35ef0312",
     "url": "/dex-challenge/static/css/main.9242e069.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dex-challenge/static/js/2.a5e19a70.chunk.js"
   },
   {
-    "revision": "b90cea884ed9c71af3f5",
-    "url": "/dex-challenge/static/js/main.95c2ae20.chunk.js"
+    "revision": "702e1815f13b35ef0312",
+    "url": "/dex-challenge/static/js/main.b93bef0f.chunk.js"
   },
   {
     "revision": "d8ab000de91f95884791",
