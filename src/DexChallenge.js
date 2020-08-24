@@ -168,7 +168,9 @@ class DexChallenge extends PureComponent {
             <div
               className={
                 "pokemon" +
-                (item.order === this.state.lastValidId ? " last-valid" : "")
+                (item.order === this.state.lastValidId && !this.isComplete()
+                  ? " last-valid"
+                  : "")
               }
               key={i}
               ref={(ref) => {
