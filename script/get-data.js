@@ -2,16 +2,27 @@ const fs = require("fs");
 const Pokedex = require("pokedex-promise-v2");
 const rp = require("request-promise");
 
+const DATA_FILE = "src/data/pokemon.json";
+
 /**
  * Command line arguments.
  *
  * -f : force (always download sprites, even if they already exist)
- * -s : download Pokemon sprites (in addition to generating data JSON)
+ * -n : download Pokemon names and generate data JSON
+ * -s : download Pokemon sprites
  * -v : verbose (extra logging)
  */
 const force = process.argv.indexOf("-f") > -1;
+const names = process.argv.indexOf("-n") > -1;
 const sprite = process.argv.indexOf("-s") > -1;
 const verbose = process.argv.indexOf("-v") > -1;
+
+let originalData;
+if (force) {
+  originalData = {};
+} else {
+  originalData = JSON.parse(fs.readFileSync(DATA_FILE));
+}
 
 const convertToMap = (data) => {
   console.log("Converting Pokemon array into Dex-Challenge format map.");
@@ -22,28 +33,19 @@ const convertToMap = (data) => {
     }
 
     result[name] = {
-      displayName: englishNameFrom(item.names),
+      displayName: englishNameFrom(item.names, item.name),
       generation: generationFrom(item.generation),
       order: item.id,
       url: name + ".png",
     };
     return result;
-  }, {});
+  }, originalData);
 };
 
 const downloadSprite = (name, url) => {
-  const path = "src/img/" + name + ".png";
-  if (force || !fs.existsSync(path)) {
-    console.log("Requesting sprite for " + name + ".");
-    rp(url).pipe(fs.createWriteStream("src/img/" + name + ".png"));
-    console.log("Downloaded sprite for " + name + ".");
-  } else if (verbose) {
-    console.log(
-      "Skipping downloding sprite for " +
-        name +
-        " since it is already downloaded."
-    );
-  }
+  console.log("Requesting sprite for " + name + ".");
+  rp(url).pipe(fs.createWriteStream(pathFor(name)));
+  console.log("Downloaded sprite for " + name + ".");
 };
 
 const downloadSprites = (data) => {
@@ -52,11 +54,12 @@ const downloadSprites = (data) => {
   });
 };
 
-const englishNameFrom = (names) => {
-  return names
+const englishNameFrom = (names, fallback) => {
+  const englishName = names
     .filter((name) => name.language.name === "en")
     .map((name) => name.name)
     .join();
+  return englishName ? englishName : fallback;
 };
 
 const generationFrom = (generation) => {
@@ -75,26 +78,52 @@ const generationFrom = (generation) => {
       return 6;
     case "generation-vii":
       return 7;
+    case "generation-viii":
+      return 8;
     default:
       console.error("invalid generation " + generation);
   }
 };
 
-const requestPokemon = (name) => {
-  return () => {
-    if (verbose) {
-      console.log("Requesting Pokemon data for " + name + ".");
-    }
-    return P.getPokemonByName(name);
-  };
+const pathFor = (name) => {
+  return "src/img/" + name + ".png";
 };
 
-const requestPokemonSpecies = (name) => {
+const requestPokemonForData = (name) => {
   return () => {
+    if (!force && originalData.hasOwnProperty(name)) {
+      if (verbose) {
+        console.log(
+          "Skipping retrieving data for " +
+            name +
+            " since it is already present."
+        );
+      }
+      return Promise.resolve();
+    }
     if (verbose) {
       console.log("Requesting species data for " + name + ".");
     }
     return P.getPokemonSpeciesByName(name);
+  };
+};
+
+const requestPokemonForSprite = (name) => {
+  return () => {
+    if (!force && fs.existsSync(pathFor(name))) {
+      if (verbose) {
+        console.log(
+          "Skipping downloding sprite for " +
+            name +
+            " since it is already downloaded."
+        );
+      }
+      return Promise.resolve();
+    }
+    if (verbose) {
+      console.log("Requesting Pokemon data for " + name + ".");
+    }
+    return P.getPokemonByName(name);
   };
 };
 
@@ -125,24 +154,32 @@ const options = {
 };
 const P = new Pokedex(options);
 
-console.log("Requesting data..");
-P.getPokemonSpeciesList()
-  .then((json) => json.results.map((pokemon) => pokemon.name))
-  .then((names) => names.map((name) => requestPokemonSpecies(name)))
-  .then((requests) => serial(requests))
-  .then((pokemonArray) => convertToMap(pokemonArray))
-  .then((pokemonMap) => writeFile("src/data/pokemon.json", pokemonMap));
+const interval = {
+  limit: 10 - 1, //Promise API returns one extra
+  offset: 0,
+};
+
+if (names) {
+  console.log("Requesting names..");
+  P.getPokemonSpeciesList()
+    .then((json) => json.results.map((pokemon) => pokemon.name))
+    .then((names) => names.map((name) => requestPokemonForData(name)))
+    .then((requests) => serial(requests))
+    .then((pokemonArray) =>
+      pokemonArray.filter((pokemon) => pokemon !== undefined)
+    )
+    .then((pokemonArray) => convertToMap(pokemonArray))
+    .then((pokemonMap) => writeFile(DATA_FILE, pokemonMap));
+}
 
 if (sprite) {
   console.log("Downloading sprites..");
-  const numberOfPokemon = 807;
-  const interval = {
-    limit: numberOfPokemon - 1, //Promise API returns one extra
-    offset: 0,
-  };
-  P.getPokemonsList(interval)
+  P.getPokemonSpeciesList()
     .then((json) => json.results.map((pokemon) => pokemon.name))
-    .then((names) => names.map((name) => requestPokemon(name)))
+    .then((names) => names.map((name) => requestPokemonForSprite(name)))
     .then((requests) => serial(requests))
+    .then((pokemonArray) =>
+      pokemonArray.filter((pokemon) => pokemon !== undefined)
+    )
     .then((pokemonArray) => downloadSprites(pokemonArray));
 }
