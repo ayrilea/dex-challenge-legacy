@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "75024505b83635c9d6ba7fda3ef3825c",
+    "revision": "2d344cfafbba9bb1493ac539457b8279",
     "url": "/dex-challenge/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dex-challenge/static/css/2.7fb3ad5b.chunk.css"
   },
   {
-    "revision": "702e1815f13b35ef0312",
+    "revision": "48c5b63626c29d5bc56e",
     "url": "/dex-challenge/static/css/main.9242e069.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dex-challenge/static/js/2.a5e19a70.chunk.js"
   },
   {
-    "revision": "702e1815f13b35ef0312",
-    "url": "/dex-challenge/static/js/main.b93bef0f.chunk.js"
+    "revision": "48c5b63626c29d5bc56e",
+    "url": "/dex-challenge/static/js/main.d10ffd11.chunk.js"
   },
   {
     "revision": "d8ab000de91f95884791",
@@ -46,6 +46,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "0798b9016570a352d9968631467b9d00",
     "url": "/dex-challenge/static/media/lunala.0798b901.png"
+  },
+  {
+    "revision": "fa46c3ddcca5c5af6ee1aa256a8289ae",
+    "url": "/dex-challenge/static/media/meltan.fa46c3dd.png"
   },
   {
     "revision": "c130699137321e25216a86b0a4f917cf",
