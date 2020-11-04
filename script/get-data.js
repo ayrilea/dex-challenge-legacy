@@ -24,6 +24,10 @@ if (force) {
   originalData = JSON.parse(fs.readFileSync(DATA_FILE));
 }
 
+const capitaliseFirstLetter = (string) => {
+  return string[0].toUpperCase() + string.slice(1);
+};
+
 const convertToMap = (data) => {
   console.log("Converting Pokemon array into Dex-Challenge format map.");
   return data.reduce((result, item) => {
@@ -33,7 +37,10 @@ const convertToMap = (data) => {
     }
 
     result[name] = {
-      displayName: englishNameFrom(item.names, item.name),
+      displayName: englishNameFrom(
+        item.names,
+        capitaliseFirstLetter(item.name)
+      ),
       generation: generationFrom(item.generation),
       order: item.id,
       url: name + ".png",
@@ -153,11 +160,6 @@ const options = {
   timeout: 1000 * 60 * 5, //Extra long timeout to accountt for rate limiting
 };
 const P = new Pokedex(options);
-
-const interval = {
-  limit: 10 - 1, //Promise API returns one extra
-  offset: 0,
-};
 
 if (names) {
   console.log("Requesting names..");
