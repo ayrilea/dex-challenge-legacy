@@ -143,6 +143,14 @@ const serial = (funcs) =>
     Promise.resolve([])
   );
 
+const sortData = (data) => {
+  const ordered = {};
+  Object.keys(data)
+    .sort((a, b) => data[a].order - data[b].order)
+    .forEach((key) => (ordered[key] = data[key]));
+  return ordered;
+};
+
 const writeFile = (location, data) => {
   console.log("Writing data file..");
   fs.writeFile(location, JSON.stringify(data), "utf8", function(err) {
@@ -171,6 +179,7 @@ if (names) {
       pokemonArray.filter((pokemon) => pokemon !== undefined)
     )
     .then((pokemonArray) => convertToMap(pokemonArray))
+    .then((data) => sortData(data))
     .then((pokemonMap) => writeFile(DATA_FILE, pokemonMap));
 }
 
