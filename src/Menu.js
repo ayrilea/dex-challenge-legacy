@@ -114,7 +114,6 @@ class Menu extends PureComponent {
                 aria-describedby="basic-addon2"
                 aria-label="Generation 8"
                 checked={this.state.generations.includes("8")}
-                disabled
                 id="generation-8-checkbox"
                 inline
                 label="8"
