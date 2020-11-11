@@ -13,7 +13,7 @@
     "react-scripts": "3.0.0",
     "request-promise": "^4.2.6"
   },
-  "homepage": "https://ayrilea.github.io/dex-challenge",
+  "homepage": "https://www.dex-challenge.site",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
