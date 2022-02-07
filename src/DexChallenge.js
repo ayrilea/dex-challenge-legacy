@@ -12,11 +12,11 @@ class DexChallenge extends PureComponent {
     this.refsArray = [];
 
     this.state = {
-      count: JSON.parse(sessionStorage.getItem("count")) || 0,
-      entered: JSON.parse(sessionStorage.getItem("entered")) || [],
+      count: JSON.parse(localStorage.getItem("count")) || 0,
+      entered: JSON.parse(localStorage.getItem("entered")) || [],
       input: "",
       remaining:
-        JSON.parse(sessionStorage.getItem("remaining")) || this.props.pokemon,
+        JSON.parse(localStorage.getItem("remaining")) || this.props.pokemon,
       valid: null,
       total: Object.keys(this.props.pokemon).length,
     };
@@ -79,9 +79,9 @@ class DexChallenge extends PureComponent {
         },
       ].sort((a, b) => a.order - b.order);
 
-      sessionStorage.setItem("count", JSON.stringify(count));
-      sessionStorage.setItem("entered", JSON.stringify(entered));
-      sessionStorage.setItem("remaining", JSON.stringify(remaining));
+      localStorage.setItem("count", JSON.stringify(count));
+      localStorage.setItem("entered", JSON.stringify(entered));
+      localStorage.setItem("remaining", JSON.stringify(remaining));
 
       return {
         count: count,
@@ -141,9 +141,9 @@ class DexChallenge extends PureComponent {
   };
 
   reset = () => {
-    sessionStorage.removeItem("count");
-    sessionStorage.removeItem("entered");
-    sessionStorage.removeItem("remaining");
+    localStorage.removeItem("count");
+    localStorage.removeItem("entered");
+    localStorage.removeItem("remaining");
 
     this.props.reset();
   };

@@ -9,8 +9,8 @@ class App extends PureComponent {
     super(props);
 
     this.state = {
-      generations: JSON.parse(sessionStorage.getItem("generations")) || [],
-      inGame: JSON.parse(sessionStorage.getItem("inGame")) || false,
+      generations: JSON.parse(localStorage.getItem("generations")) || [],
+      inGame: JSON.parse(localStorage.getItem("inGame")) || false,
     };
   }
 
@@ -30,8 +30,8 @@ class App extends PureComponent {
   };
 
   reset = () => {
-    sessionStorage.removeItem("generations");
-    sessionStorage.setItem("inGame", JSON.stringify(false));
+    localStorage.removeItem("generations");
+    localStorage.setItem("inGame", JSON.stringify(false));
 
     this.setState({
       generations: [],
@@ -40,8 +40,8 @@ class App extends PureComponent {
   };
 
   startGame = (generations) => {
-    sessionStorage.setItem("generations", JSON.stringify(generations));
-    sessionStorage.setItem("inGame", JSON.stringify(true));
+    localStorage.setItem("generations", JSON.stringify(generations));
+    localStorage.setItem("inGame", JSON.stringify(true));
 
     this.setState({
       generations: generations,
