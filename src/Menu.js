@@ -35,7 +35,7 @@ class Menu extends PureComponent {
       <div className="menu-container p-3 text-center text-light">
         <h1>Dex Challenge</h1>
         <Form className="generation-form">
-          <h4>Generation</h4>
+          <h4>Select generation(s)</h4>
           <div className="generation-selection">
             <Form.Group controlId="generation-group-top">
               <Form.Check
@@ -44,7 +44,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("1")}
                 id="generation-1-checkbox"
                 inline
-                label="1"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/mewtwo.png")}
+                      alt={"mewtwo"}
+                      width="72px"
+                    />
+                    <div>1</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "1")}
                 type="checkbox"
               />
@@ -54,7 +64,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("2")}
                 id="generation-2-checkbox"
                 inline
-                label="2"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/suicune.png")}
+                      alt={"suicune"}
+                      width="72px"
+                    />
+                    <div>2</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "2")}
                 type="checkbox"
               />
@@ -64,7 +84,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("3")}
                 id="generation-3-checkbox"
                 inline
-                label="3"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/rayquaza.png")}
+                      alt={"rayquaza"}
+                      width="72px"
+                    />
+                    <div>3</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "3")}
                 type="checkbox"
               />
@@ -74,7 +104,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("4")}
                 id="generation-4-checkbox"
                 inline
-                label="4"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/giratina.png")}
+                      alt={"giratina"}
+                      width="72px"
+                    />
+                    <div>4</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "4")}
                 type="checkbox"
               />
@@ -86,7 +126,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("5")}
                 id="generation-5-checkbox"
                 inline
-                label="5"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/kyurem.png")}
+                      alt={"kyurem"}
+                      width="72px"
+                    />
+                    <div>5</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "5")}
                 type="checkbox"
               />
@@ -96,7 +146,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("6")}
                 id="generation-6-checkbox"
                 inline
-                label="6"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/zygarde.png")}
+                      alt={"zygarde"}
+                      width="72px"
+                    />
+                    <div>6</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "6")}
                 type="checkbox"
               />
@@ -106,7 +166,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("7")}
                 id="generation-7-checkbox"
                 inline
-                label="7"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/necrozma.png")}
+                      alt={"necrozma"}
+                      width="72px"
+                    />
+                    <div>7</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "7")}
                 type="checkbox"
               />
@@ -116,7 +186,17 @@ class Menu extends PureComponent {
                 checked={this.state.generations.includes("8")}
                 id="generation-8-checkbox"
                 inline
-                label="8"
+                label={
+                  <div>
+                    <img
+                      height="72px"
+                      src={require("./img/eternatus.png")}
+                      alt={"eternatus"}
+                      width="72px"
+                    />
+                    <div>8</div>
+                  </div>
+                }
                 onChange={(e) => this.onChange(e.target.checked, "8")}
                 type="checkbox"
               />
