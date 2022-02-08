@@ -18,6 +18,7 @@ class DexChallenge extends PureComponent {
       remaining:
         JSON.parse(localStorage.getItem("remaining")) || this.props.pokemon,
       valid: null,
+      suggestion: "",
       total: Object.keys(this.props.pokemon).length,
     };
   }
@@ -44,6 +45,26 @@ class DexChallenge extends PureComponent {
       });
     }
   }
+
+  /**
+   * Parses the user input to find a unique suggestion if one exists.
+   *
+   * This method will return a suggestion if the user input is at least four characters in
+   * length and current input is a prefix for a single Pokemon in the remaining list (i.e.
+   * a suggestion will only be returned if it is unique based on the current prefix).
+   */
+  getSuggestion = (input) => {
+    if (input.length < 4) {
+      return "";
+    }
+    const suggestions = Object.entries(
+      this.state.remaining
+    ).filter(([name, data]) => name.startsWith(input));
+    if (suggestions.length === 1) {
+      return suggestions[0][1].displayName;
+    }
+    return "";
+  };
 
   /**
    * Handle when entry is submitted and it is invalid.
@@ -89,6 +110,7 @@ class DexChallenge extends PureComponent {
         lastValidId: entry.order,
         input: "",
         remaining: remaining,
+        suggestion: "",
         valid: true,
       };
     });
@@ -117,8 +139,10 @@ class DexChallenge extends PureComponent {
    * When input changes, updates input state and clears valid styling.
    */
   onChange = ({ target }) => {
+    const suggestion = this.getSuggestion(DexChallenge.parseName(target.value));
     this.setState((state) => ({
       input: target.value,
+      suggestion: suggestion,
       valid: null,
     }));
   };
@@ -131,7 +155,9 @@ class DexChallenge extends PureComponent {
     e.preventDefault();
     this.inputNode.focus({ preventScroll: true });
 
-    const name = DexChallenge.parseName(this.state.input);
+    const input = DexChallenge.parseName(this.state.input);
+    const suggestion = DexChallenge.parseName(this.state.suggestion);
+    const name = input.length >= suggestion.length ? input : suggestion;
 
     if (this.isValidEntry(name)) {
       this.handleValidEntry(name);
@@ -188,6 +214,9 @@ class DexChallenge extends PureComponent {
           {complete && <h3>Complete!</h3>}
           {!complete && (
             <form onSubmit={this.onSubmit}>
+              <div className="suggestion" onClick={this.onSubmit}>
+                {this.state.suggestion}
+              </div>
               <InputGroup>
                 <FormControl
                   aria-describedby="basic-addon2"

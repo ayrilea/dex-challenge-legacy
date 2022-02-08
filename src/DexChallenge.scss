@@ -10,7 +10,7 @@
 }
 
 .entered-container::-webkit-scrollbar {
-  /* WebKit */
+  //WebKit
   width: 0;
   height: 0;
 }
@@ -29,7 +29,7 @@
     button {
       position: absolute;
       left: 4px;
-      /* vertically center the icon */
+      //Vertically center the icon
       top: 50%;
       transform: translateY(-50%);
     }
@@ -67,7 +67,13 @@
 }
 
 .input-container {
-  margin-top: 5px;
   max-width: 400px;
+  //Overwrite p-3 padding just for the top to give space for the suggestion
+  padding-top: 5px !important;
   width: 100%;
+
+  .suggestion {
+    height: 20px;
+    margin-bottom: 8px;
+  }
 }
