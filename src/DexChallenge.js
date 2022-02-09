@@ -54,9 +54,7 @@ class DexChallenge extends PureComponent {
         //Two Pokemon have apostrophes in their display names: Farfetch'd and Sirfetch'd. For these
         //two Pokemon specifically the apostrophe is removed to allow the input to be the display name
         //(as the expected format contains no apostrophes in names).
-        .replace("farfetch’", "farfetch")
         .replace("farfetch'", "farfetch")
-        .replace("sirfetch’", "sirfetch")
         .replace("sirfetch'", "sirfetch")
         //One Pokemon has a diacritic in its display name: Flabébé. For this Pokemon specifically the
         //diacritics are replaced by the base letter as per the expected format.
