@@ -27,13 +27,46 @@ class DexChallenge extends PureComponent {
    * Parse inputted name into the format expected by props.pokemon.
    *
    * @return the inputted name, trimmed (leading/trialing spaces removed), all lower case,
-   *         and with spaces replaced by hyphens
+   *         with spaces replaced by hyphens, and non alphabetical characters used
+   *         transformed where applicable
    */
-  static parseName = (name) => {
-    return name
-      .trim()
-      .toLowerCase()
-      .replace(" ", "-");
+  static noramliseName = (name) => {
+    return (
+      name
+        //Remove leading and trialing spaces.
+        .trim()
+        //All lowwer case (effectively making input case insensitive).
+        .toLowerCase()
+        //Replace spaces with hyphens. For Pokemon that have spaces in their display names this
+        //makes the version with a space also valid input (e.g. "Nidoran F" for "nidoran-f").
+        .replace(" ", "-")
+        //Three Pokemon have a period in their display name: Mime Jr, Mr. Mime and Mr. Rime. For
+        //these three Pokemon specifically the period is removed to allow the input to be the
+        //display name (as the expected format contains no periods in names).
+        .replace("mime-jr.", "mime-jr")
+        .replace("mr.-m", "mr-m")
+        .replace("mr.-r", "mr-r")
+        //Two Pokemon have a custom gender symbol in their display name: Nidoran♀ and Nidoran ♂.
+        //For these two Pomemon specifically the gender symbol is replaced by a hyphen and a letter
+        //as per the expected format.
+        .replace("nidoran♀", "nidoran-f")
+        .replace("nidoran♂", "nidoran-m")
+        //Two Pokemon have apostrophes in their display names: Farfetch'd and Sirfetch'd. For these
+        //two Pokemon specifically the apostrophe is removed to allow the input to be the display name
+        //(as the expected format contains no apostrophes in names).
+        .replace("farfetch’", "farfetch")
+        .replace("farfetch'", "farfetch")
+        .replace("sirfetch’", "sirfetch")
+        .replace("sirfetch'", "sirfetch")
+        //One Pokemon has a diacritic in its display name: Flabébé. For this Pokemon specifically the
+        //diacritics are replaced by the base letter as per the expected format.
+        .replace("flabébé", "flabebe")
+        .replace("flabé", "flabe")
+        //One Pokemon has a colon in its display name: Type: Null. For this Pokemon specifically the
+        //colon is removed to allow the input to be the display name (as the expected format contains
+        //no colons in names)
+        .replace("type:", "type")
+    );
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -139,7 +172,9 @@ class DexChallenge extends PureComponent {
    * When input changes, updates input state and clears valid styling.
    */
   onChange = ({ target }) => {
-    const suggestion = this.getSuggestion(DexChallenge.parseName(target.value));
+    const suggestion = this.getSuggestion(
+      DexChallenge.noramliseName(target.value)
+    );
     this.setState((state) => ({
       input: target.value,
       suggestion: suggestion,
@@ -155,8 +190,8 @@ class DexChallenge extends PureComponent {
     e.preventDefault();
     this.inputNode.focus({ preventScroll: true });
 
-    const input = DexChallenge.parseName(this.state.input);
-    const suggestion = DexChallenge.parseName(this.state.suggestion);
+    const input = DexChallenge.noramliseName(this.state.input);
+    const suggestion = DexChallenge.noramliseName(this.state.suggestion);
     const name = input.length >= suggestion.length ? input : suggestion;
 
     if (this.isValidEntry(name)) {
