@@ -80,11 +80,19 @@ class DexChallenge extends PureComponent {
   /**
    * Parses the user input to find a unique suggestion if one exists.
    *
-   * This method will return a suggestion if the user input is at least four characters in
-   * length and current input is a prefix for a single Pokemon in the remaining list (i.e.
-   * a suggestion will only be returned if it is unique based on the current prefix).
+   * This method will return a suggestion if the user input is an exact martch, or if at least
+   * four characters in length and current input is a prefix for a single Pokemon in the remaining
+   * list (i.e. a suggestion will only be returned if it is unique based on the current prefix).
    */
   getSuggestion = (input) => {
+    //Mew amd Muk have names under 4 characters but a suggestion should still show when they're
+    //entered as input.
+    const exactMatch = Object.entries(this.state.remaining).filter(
+      ([name, data]) => name === input
+    );
+    if (exactMatch.length === 1) {
+      return exactMatch[0][1].displayName;
+    }
     if (input.length < 4) {
       return "";
     }
