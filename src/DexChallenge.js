@@ -15,6 +15,7 @@ class DexChallenge extends PureComponent {
       count: JSON.parse(localStorage.getItem("count")) || 0,
       entered: JSON.parse(localStorage.getItem("entered")) || [],
       input: "",
+      placeholders: false,
       remaining:
         JSON.parse(localStorage.getItem("remaining")) || this.props.pokemon,
       valid: null,
@@ -133,6 +134,7 @@ class DexChallenge extends PureComponent {
         ...state.entered,
         {
           displayName: entry.displayName,
+          entered: true,
           order: entry.order,
           name: name,
           url: entry.url,
@@ -207,6 +209,15 @@ class DexChallenge extends PureComponent {
     }
   };
 
+  onTogglePlaceholders = (e) => {
+    e.preventDefault();
+    this.inputNode.focus({ preventScroll: true });
+
+    this.setState((state) => ({
+      placeholders: !state.placeholders,
+    }));
+  };
+
   reset = () => {
     localStorage.removeItem("count");
     localStorage.removeItem("entered");
@@ -222,34 +233,71 @@ class DexChallenge extends PureComponent {
       <div className="game-container text-center text-light">
         <div className="game-header p-3">
           <div className="game-count">
-            <Button onClick={this.reset} variant="outline-light">
+            <Button
+              className="reset"
+              onClick={this.reset}
+              variant="outline-light"
+            >
               Reset
             </Button>
             <h1>{this.state.count}</h1>
+            <Button
+              className="placeholders"
+              onClick={this.onTogglePlaceholders}
+              variant="outline-light"
+            >
+              Placeholders
+            </Button>
           </div>
           <h4>Remaining: {this.state.total - this.state.count}</h4>
           Generation {this.props.generations}
         </div>
         <div className="entered-container p-1">
-          {this.state.entered.map((item, i) => (
-            <div
-              className={
-                "pokemon" +
-                (item.order === this.state.lastValidId && !this.isComplete()
-                  ? " last-valid"
-                  : "")
-              }
-              key={i}
-              ref={(ref) => {
-                this.refsArray[item.order] = ref;
-              }}
-            >
-              <Image pokemon={item} />
-              <span className="pokemon-number">#{item.order}</span>
-              <br />
-              <span className="pokemon-name">{item.displayName}</span>
-            </div>
-          ))}
+          {!this.state.placeholders &&
+            this.state.entered.map((item, i) => (
+              <div
+                className={
+                  "pokemon" +
+                  (item.order === this.state.lastValidId && !this.isComplete()
+                    ? " last-valid"
+                    : "")
+                }
+                key={i}
+                ref={(ref) => {
+                  this.refsArray[item.order] = ref;
+                }}
+              >
+                <Image pokemon={item} />
+                <span className="pokemon-number">#{item.order}</span>
+                <br />
+                <span className="pokemon-name">{item.displayName}</span>
+              </div>
+            ))}
+          {this.state.placeholders &&
+            Object.values(this.state.remaining)
+              .concat(this.state.entered)
+              .sort((a, b) => a.order - b.order)
+              .map((item, i) => (
+                <div
+                  className={
+                    "pokemon" +
+                    (item.order === this.state.lastValidId && !this.isComplete()
+                      ? " last-valid"
+                      : "")
+                  }
+                  key={i}
+                  ref={(ref) => {
+                    this.refsArray[item.order] = ref;
+                  }}
+                >
+                  <Image pokemon={item} />
+                  <span className="pokemon-number">#{item.order}</span>
+                  <br />
+                  <span className="pokemon-name">
+                    {item.entered ? item.displayName : "???"}
+                  </span>
+                </div>
+              ))}
         </div>
         <div className="input-container p-3">
           {complete && <h3>Complete!</h3>}
@@ -295,7 +343,9 @@ DexChallenge.propTypes = {
 class Image extends PureComponent {
   render() {
     return (
-      <div className="image">
+      <div
+        className={"image" + (this.props.pokemon.entered ? "" : " remaining")}
+      >
         <img
           height="72px"
           src={require("./img/" + this.props.pokemon.url)}

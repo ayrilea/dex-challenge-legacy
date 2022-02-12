@@ -26,9 +26,16 @@
 
 .game-header {
   .game-count {
-    button {
+    .reset {
       position: absolute;
       left: 4px;
+      //Vertically center the icon
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .placeholders {
+      position: absolute;
+      right: 4px;
       //Vertically center the icon
       top: 50%;
       transform: translateY(-50%);
@@ -55,6 +62,12 @@
 
   .pokemon-name {
     font-size: x-small;
+  }
+
+  .remaining {
+    img {
+      opacity: 0;
+    }
   }
 }
 
