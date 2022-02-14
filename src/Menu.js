@@ -130,6 +130,21 @@ class Menu extends PureComponent {
         >
           Start
         </Button>
+        <div className="dedication text-muted">
+          <img
+            height="36px"
+            src={require("./img/bulbasaur.png")}
+            alt="bulbasur"
+            width="36px"
+          />
+          For Bel, with love
+          <img
+            height="36px"
+            src={require("./img/eevee.png")}
+            alt="eevee"
+            width="36px"
+          />
+        </div>
       </div>
     );
   }
